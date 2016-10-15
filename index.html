@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+  <title>James O'Neill</title>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
+  <link rel="stylesheet" href="style.css">
+     <link rel="import" href="custom-styles.html">
+  
+  <script src="//use.typekit.net/mqa2rjy.js"></script>
+  <script>try{Typekit.load();}catch(e){}</script>
+
+  <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+  <script src="bower_components/web-animations-js/web-animations.min.js"></script>
+    
+
+  <link rel="import" href="bower_components/seed-element/card-element.html">
+  <link rel="import" href="bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+  <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+  <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+  <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+  <link rel="import" href="bower_components/paper-styles/paper-styles.html">
+  <!--<link rel="import" href="bower_components/paper-styles/demo-pages.html">-->
+  <link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
+  <link rel="import" href="bower_components/paper-progress/paper-progress.html">
+  <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+  <link rel="import" href="bower_components/paper-tabs/paper-tab.html">
+  <link rel="import" href="bower_components/iron-pages/iron-pages.html">
+  <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
+  <link rel="import" href="bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+  <link rel="import" href="bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+  <link rel="import" href="bower_components/paper-button/paper-button.html">
+  <link rel="import" href="bower_components/neon-animation/animations/slide-from-left-animation.html">
+  <link rel="import" href="bower_components/neon-animation/animations/fade-in-animation.html">
+  <link rel="import" href="bower_components/neon-animation/animations/fade-out-animation.html">
+
+  
+  
+  
+   <script type="text/javascript" src="bower_components/tabletop/src/tabletop.js"></script>
+  
+ <link rel="import" href="bower_components/polymer/polymer.html">
+    
+      
+    
+</head>
+
+<body class="fullbleed layout vertical">
+  
+      <div id = "dialogs">
+      
+      
+              <!-- just here for test, it's never called, but right now it's serving as an error message for ios -->
+              <paper-dialog id="dialog" modal="true" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+                <h2>Apologies</h2>
+                <paper-button dialog-dismiss></paper-button>
+                <paper-dialog-scrollable>
+                <iron-image style="width:100%; height:506px;" sizing="cover" src="https://drive.google.com/uc?export=download&id=0Bxcy-GgchG0eV0FPa0ZsTGhibzQ"></iron-image>
+                  Something appears to be broken. Please try again on an android device or pc. 
+                </paper-dialog-scrollable>
+              </paper-dialog>
+              
+              
+      </div>
+          
+  
+ <template is="dom-bind" id="scope"> <!--I had to do wrap everthing in a template for data binding to work -->
+    <paper-header-panel mode="waterfall-tall" class="flex">
+      
+        
+        <paper-toolbar> <!-- this is bugyy. It needs to be fixed -->
+         <div class="middle">
+           <h2>James O'Neill</h2>
+         </div>
+          <div class="bottom">
+              <paper-tabs id="tabs" noink="true" selected="{{selected}}" class="flex"> <!-- the selected state of the paper-tab element is data bound to the iron-pages element -->
+              <paper-tab>WORK</paper-tab>
+              <paper-tab>ABOUT</paper-tab>
+          </paper-tabs>
+          </div>
+          
+        </paper-toolbar>
+        
+             
+
+          <iron-pages selected="{{selected}}"> <!-- data binding from paper-tabs -->
+            <div id="main" class="page horizontal center-justified layout wrap"><paper-progress indeterminate value="10"></paper-progress></div> <!-- loading bar to keep people entertained while the page is loading-->
+            <div id="main" class="page horizontal center-justified layout wrap">
+               <!-- static info for contact page -->
+              
+              <paper-material id="contact" class="auto-vertical">
+                <p>I graduated from Visual Communication at DIT in 2014. Soon after that I moved to London for an internship at Imagination. After completing that internship I moved to the Graduate Academy at StartJG, where I was one of the 6 chosen to join the team full-time. After a while I moved back to Dublin to work with the fantastic team at Deloitte Digital.</br> </br>Get in touch: <a href="mailto:thejamesoneill@gmail.com?Subject=Hi%20there,%20you%20sound%20nice." target="_top"><iron-icon icon="icons:mail"></iron-icon> thejamesoneill@gmail.com</a></p>
+              </paper-material>
+              <br>
+            </div>
+          </iron-pages>
+        
+  
+        
+
+  </paper-header-panel>
+
+    </template>
+ 
+  <script type="text/javascript">
+      
+      
+      // When all the webcomponents are ready, chage the selected page to 0, ie the homepage
+      window.addEventListener('WebComponentsReady', function() { //You have to make sure that all custom elements are loaded
+          var scope = document.querySelector("template#scope");
+        scope.selected = 0; // display the number 0
+           
+       });
+      
+
+        
+      
+      //define the public url and init tabletops
+      window.onload = function() { init(); };
+      var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1h1DTdbyvodIlBxqBSnQx_kdu6hBZHoOA-OjKXM3VC3Q/pubhtml';
+      
+      function init() {
+        Tabletop.init( { key: public_spreadsheet_url,
+                         debug : true,
+                         callback: showInfo,
+                         simpleSheet: false } );
+      }
+    
+      function showInfo(data, tabletop) {
+        
+        //these varables aren't really nesserry. They could be dynamicly assigned later on if they need to be. 
+        var sheet = "Projects";
+        var content = "Title";
+        var imgContent = "Img";
+        
+        //define the page number in <iron-pages> that we want to post the data in
+        var row = document.getElementsByClassName("page")[0];
+
+        //clear the page of any interal stuff, ie. the loading bar
+        row.innerHTML = "";
+          
+        
+        postCard(data, tabletop, sheet, row); //call the post data function 
+        
+        //now set up the data for the next page, chage the sheet that table tops reads, and the place in the DOM that it will be posted
+        sheet = "cv";
+        row = document.getElementsByClassName("page")[1];
+        
+        postCard(data, tabletop, sheet, row); // call the function with the new row and sheet varible 
+        
+        function postCard(data, tabletop, sheet, row){
+        
+        var row_count = tabletop.sheets(sheet).all().length;
+        
+          for (i = 0; i < row_count; i++){ //for every row in the sheet...
+            
+            //create a DOM element for the Card and assign the tabletops data to its propties 
+            var element_dom = document.createElement("card-element");
+            element_dom.title = tabletop.sheets(sheet).all()[i][content];
+            var img =  tabletop.sheets(sheet).all()[i][imgContent];
+            if (!img){ // if theres no image then it make it a copy card
+              element_dom.body = tabletop.sheets(sheet).all()[i]["Copy"];
+              element_dom.hideBody = "false";
+            }else{
+              element_dom.img = tabletop.sheets(sheet).all()[i][imgContent];
+            }
+            element_dom.subhead = tabletop.sheets(sheet).all()[i]["Subhead"];
+            
+            var cardClass = "card" + sheet; // give all the cards created from this sheet the same class so you can style them 
+            
+            element_dom.className = cardClass;
+            
+            row.appendChild(element_dom); //finially append the completed card element to the DOM
+            
+            
+            //Create the model for Card
+            // you have to create the <paper-dialog> and all the elements that are contained in it. 
+            var model_dom = document.createElement("paper-dialog");
+            var scroll_model = document.createElement("paper-dialog-scrollable");
+            var model_head = document.createElement("h2");
+            var model_img = document.createElement("iron-image");
+            var model_dismiss = document.createElement("paper-icon-button");
+            //var model_text = document.createTextNode(tabletop.sheets(sheet).all()[i]["Copy"]); //you cant use append child on anything other then nodes, so make the body text into a text node
+            var model_text_direct = tabletop.sheets(sheet).all()[i]["Copy"];
+            var wrapper = document.createElement("div");
+            var model_head_text = document.createTextNode(tabletop.sheets(sheet).all()[i]["Title"]);
+            
+            //give each dialog a unique id so it can be toggled
+            var currentId = "dialog" + i;
+            
+            model_dom.id = currentId;
+            model_dom.modal = "true";
+            model_dom.setAttribute("entry-animation","slide-from-left-animation"); //javascript dosnt like dashes in attribute names. apprently this is a workaround but it's not working right now
+            model_dom.setAttribute("exit-animation","fade-out-animation");
+            
+            var w = window.innerWidth;
+            
+            model_img.setAttribute("style", "width:100%; height:" + (w/4) + "px;");//set size of image in dialog
+            model_img.sizing = "cover";
+            if (!img){//if theres no image...
+              // TODO change this to post a placeholder img, or something.
+              model_img.src = tabletop.sheets(sheet).all()[i]["Model_img"];
+            }else{
+              model_img.src = tabletop.sheets(sheet).all()[i]["Model_img"];
+            }
+            
+            model_dismiss.icon = "clear"; //use the clear icon for the paper-icon-button
+            model_dismiss.setAttribute("dialog-dismiss","true"); //give the button the attribute to dismiss the dialog
+            
+            var col_count = tabletop.sheets(sheet).column_names.length;
+            var current_col = "";
+            var type = "";
+            var imgTest;
+            
+            //wrapper.appendChild(model_text);
+            wrapper.innerHTML = wrapper.innerHTML + model_text_direct; 
+            
+            for (c = 3; c < col_count; c++){
+             
+             current_col = tabletop.sheets(sheet).column_names[c];
+             type = current_col[0] + current_col[1] + current_col[2];
+             
+             if (type == "Img"){
+              imgTest = tabletop.sheets(sheet).all()[i][current_col];
+              if(!imgTest){
+              }else{
+                var model_img_2 = document.createElement("iron-image");
+                model_img_2.setAttribute("style", "width:100%; height:350px;");
+                model_img_2.sizing = "cover";
+                model_img_2.src = tabletop.sheets(sheet).all()[i][current_col];
+                wrapper.appendChild(model_img_2);
+              }
+             }
+             if (type == "Vid"){
+               var link = tabletop.sheets(sheet).all()[i][current_col];
+                 var video = document.createElement("iframe");
+                 video.setAttribute("src" , link );
+                 video.setAttribute("frameborder", "0");
+                 video.width ="100%";
+                 video.height = "350";
+                 video.setAttribute("webkitallowfullscreen", "true");
+                 video.setAttribute("mozallowfullscreen" , "true");
+                 video.setAttribute("allowfullscreen" , "true");
+                 if(!link){
+                   
+                 }else{
+                 wrapper.appendChild(video);
+                 }
+             }
+            }
+          
+            wrapper.className = "modelContentWrapper";
+            //then append all the elements into their parent elements
+            //iron-image and all the copy need to go inside the paper-dialog-scrollable
+            //which in turn needs to go into the paper-dialog
+            
+            model_head.appendChild(model_head_text);
+            model_dom.appendChild(model_head);
+            model_dom.appendChild(model_dismiss);
+            scroll_model.appendChild(model_img);
+            
+          
+            scroll_model.appendChild(wrapper);
+            
+            model_dom.appendChild(scroll_model);
+            
+            document.getElementById("dialogs").appendChild(model_dom);//add the compiled element to the DOM
+            
+  
+            
+            
+            modalLink(i, cardClass, currentId); // Assign the click events to the current card
+            
+            //element_dom.addEventListener('click', function(){
+            //document.getElementById("dialog").toggle(); 
+            //});
+            
+            
+            function modalLink(i, cardClass, ID){
+              document.getElementsByClassName(cardClass)[i].addEventListener('click', function(){modalClick(ID);});
+            }
+
+            function modalClick (ID){
+              document.getElementById(ID).scrollTop = 0;
+              document.getElementById(ID).toggle();
+            }
+            
+            
+            
+          }
+          
+        }
+     
+        
+      }
+    
+    
+  </script>
+     
+     
+</body>
+      
+</html>

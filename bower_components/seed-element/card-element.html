@@ -1,0 +1,159 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="../paper-styles/paper-styles.html">
+<link rel="import" href="../iron-image/iron-image.html">
+
+
+
+<!--
+Card Element
+
+Style, 
+.title
+.subhead
+.body
+
+
+Example:
+
+    <card-element></card-element>
+
+@demo
+-->
+<dom-module id="card-element">
+
+  <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+    }
+
+    .subhead, .title, #para{
+
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    #para{
+      padding-bottom: 24px;
+
+    }
+
+    .hide{
+      display: none;
+    }
+
+
+  </style>
+
+  <template>
+    <paper-material id="material">
+      <iron-image id="cardImage" style="width:100%;"  sizing="cover" preload fade src="{{img}}"></iron-image>
+      <div>
+        <h1 class="title">{{title}}</h1>
+        <h2 class="subhead">{{subhead}}</h2>
+        <p  id="para">{{body}}</p>
+      </div>
+      <content></content>
+  </paper-material>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'card-element',
+
+    properties: {
+
+      /**
+       * `title` is the main header of the card,
+       * it sets the context for the content to come.
+       */
+      title: String,
+
+      subhead: String,
+
+      body: String,
+
+      hideBody: {
+        type: Boolean,
+        value: true,
+      },
+
+      img: {
+        type: String,
+
+      },      
+    },
+
+    // Element Lifecycle
+
+    ready: function() {
+      // `ready` is called after all elements have been configured, but
+      // propagates bottom-up. This element's children are ready, but parents
+      // are not.
+      //
+      // This is the point where you should make modifications to the DOM (when
+      // necessary), or kick off any processes the element wants to perform.    
+    },
+
+    attached: function() {
+      // `attached` fires once the element and its parents have been inserted
+      // into a document.
+      //
+      // This is a good place to perform any work related to your element's
+      // visual state or active behavior (measuring sizes, beginning animations,
+      // loading resources, etc).
+
+      var card_image = this.$.cardImage;
+      var currentWidth = 350;
+      var pHeight = 200;
+      pHeight = (0.56*currentWidth);
+      card_image.height = pHeight; 
+      var paragraph = this.$.para;
+
+      var imgSrc = card_image.src;
+
+        if (imgSrc == ""){
+          var material = this.$.material;
+          material.removeChild(card_image);
+          material.id = "textCard";
+        }
+
+        
+        if (this.hideBody == true){
+          paragraph.className = "hide";
+        }
+
+      window.onload = function(){   
+        currentWidth = card_image.clientWidth;
+
+      }
+
+      window.onresize = function() {
+        currentWidth = card_image.clientWidth;
+      };
+    },
+
+    detached: function() {
+      // The analog to `attached`, `detached` fires when the element has been
+      // removed from a document.
+      //
+      // Use this to clean up anything you did in `attached`.
+    },
+
+  });
+
+</script>
